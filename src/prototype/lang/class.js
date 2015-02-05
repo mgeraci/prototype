@@ -8,7 +8,7 @@
  *  Refer to Prototype's web site for a [tutorial on classes and
  *  inheritance](http://prototypejs.org/learn/class-inheritance).
 **/
-var Klass = (function() {
+var Class = (function() {
 
   // Some versions of JScript fail to enumerate over properties, names of which
   // correspond to non-enumerable properties in the prototype chain
@@ -52,16 +52,15 @@ var Klass = (function() {
   **/
   function subclass() {};
   function create() {
-    var parent = null, properties = arguments;
-		if (_.isFunction(properties[0]))
+    var parent = null, properties = $A(arguments);
+    if (Object.isFunction(properties[0]))
       parent = properties.shift();
 
     function klass() {
       this.initialize.apply(this, arguments);
     }
 
-    //Object.extend(klass, Klass.Methods);
-		klass = _.extend(klass, Klass.Methods);
+    Object.extend(klass, Class.Methods);
     klass.superclass = parent;
     klass.subclasses = [];
 
@@ -162,7 +161,7 @@ var Klass = (function() {
 
     for (var i = 0, length = properties.length; i < length; i++) {
       var property = properties[i], value = source[property];
-			if (ancestor && _.isFunction(value) &&
+      if (ancestor && Object.isFunction(value) &&
           value.argumentNames()[0] == "$super") {
         var method = value;
         value = (function(m) {
