@@ -1,6 +1,4 @@
 //= compat
-//= require "./prototype/prototype"
-//= require "./prototype/lang"
-//= require "./prototype/ajax"
-//= require "./prototype/dom"
-//= require "./prototype/deprecated"
+//= require "./jquery-1.11.0.js"
+//= require "./underscore.js"
+//= require "./prototype/lang/class.js"

@@ -8,9 +8,9 @@
  *  Refer to Prototype's web site for a [tutorial on classes and
  *  inheritance](http://prototypejs.org/learn/class-inheritance).
 **/
-var Class = (function() {
-  
-  // Some versions of JScript fail to enumerate over properties, names of which 
+var Klass = (function() {
+
+  // Some versions of JScript fail to enumerate over properties, names of which
   // correspond to non-enumerable properties in the prototype chain
   var IS_DONTENUM_BUGGY = (function(){
     for (var p in { toString: 1 }) {
@@ -19,7 +19,7 @@ var Class = (function() {
     }
     return true;
   })();
-  
+
   /**
    *  Class.create([superclass][, methods...]) -> Class
    *    - superclass (Class): The optional superclass to inherit methods from.
@@ -52,15 +52,16 @@ var Class = (function() {
   **/
   function subclass() {};
   function create() {
-    var parent = null, properties = $A(arguments);
-    if (Object.isFunction(properties[0]))
+    var parent = null, properties = arguments;
+		if (_.isFunction(properties[0]))
       parent = properties.shift();
 
     function klass() {
       this.initialize.apply(this, arguments);
     }
 
-    Object.extend(klass, Class.Methods);
+    //Object.extend(klass, Klass.Methods);
+		klass = _.extend(klass, Klass.Methods);
     klass.superclass = parent;
     klass.subclasses = [];
 
@@ -161,15 +162,15 @@ var Class = (function() {
 
     for (var i = 0, length = properties.length; i < length; i++) {
       var property = properties[i], value = source[property];
-      if (ancestor && Object.isFunction(value) &&
+			if (ancestor && _.isFunction(value) &&
           value.argumentNames()[0] == "$super") {
         var method = value;
         value = (function(m) {
           return function() { return ancestor[m].apply(this, arguments); };
         })(property).wrap(method);
-        
+
         // We used to use `bind` to ensure that `toString` and `valueOf`
-        // methods were called in the proper context, but now that we're 
+        // methods were called in the proper context, but now that we're
         // relying on native bind and/or an existing polyfill, we can't rely
         // on the nuanced behavior of whatever `bind` implementation is on
         // the page.
@@ -179,7 +180,7 @@ var Class = (function() {
         value.valueOf = (function(method) {
           return function() { return method.valueOf.call(method); };
         })(method);
-        
+
         value.toString = (function(method) {
           return function() { return method.toString.call(method); };
         })(method);
