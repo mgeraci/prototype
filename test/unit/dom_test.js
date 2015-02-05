@@ -77,17 +77,25 @@ new Test.Unit.Runner({
   },
 
   testDollarFunction: function() {
+		console.log(this.assertUndefined($()));
+		console.log(1);
+
     this.assertUndefined($());
+		console.log(2);
 
     this.assertNull(document.getElementById('noWayThisIDExists'),
      'nonexistent ID should return null from getElementById');
+		console.log(3);
     this.assertNull($('noWayThisIDExists'),
      'nonexistent ID should return null from $');
 
+		console.log(4);
     this.assertIdentical(document.getElementById('testdiv'), $('testdiv'),
      'getElementById and $ should return the same element');
 
+		console.log(5);
     this.assertEnumEqual([ $('testdiv'), $('container') ], $('testdiv', 'container'));
+		console.log(6);
     this.assertEnumEqual([ $('testdiv'), null, $('container') ],
       $('testdiv', 'noWayThisIDExists', 'container'));
     var elt = $('testdiv');
