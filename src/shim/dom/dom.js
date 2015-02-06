@@ -7,13 +7,25 @@
 		return str.split(/\s/)
 	}
 
+	$A = function(arg) {
+		return Array(arg);
+	}
+
 	$ = function(arg) {
 		if (arg == null) {
 			return undefined;
 		} else if (typeof(arg) == "string") {
-			return jQuery("#" + arg).get(0);
+			var jqObj = jQuery("#" + arg);
+
+			if (!jqObj.length) {
+				return null;
+			}
+
+			return jqObj.get(0);
+		} else if (typeof(arg) == "object") {
+			return arg;
 		}
 
-		console.warn("UNIMPLEMENTED: $", arg);
+		console.warn("UNIMPLEMENTED: $", arg, typeof(arg));
 	}
 })(this);
